@@ -1,0 +1,6192 @@
+{
+ "api_keys": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "key_prefix",
+    "type": "char(12)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "key_hash",
+    "type": "char(64)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "scopes",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_by",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "last_used_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "revoked_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_api_keys_tenant",
+    "unique": false,
+    "cols": "tenant_id,revoked_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_api_keys_hash",
+    "unique": true,
+    "cols": "key_hash"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_api_keys_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "audit_logs": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "actor_type",
+    "type": "enum('PLATFORM','USER','CUSTOMER','SYSTEM','API_KEY')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "actor_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "impersonator_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "action",
+    "type": "varchar(80)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "entity_type",
+    "type": "varchar(60)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "entity_id",
+    "type": "varchar(64)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "old_values",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "new_values",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ip",
+    "type": "varchar(45)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "user_agent",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_audit_logs_tenant_entity",
+    "unique": false,
+    "cols": "tenant_id,entity_type,entity_id"
+   },
+   {
+    "name": "ix_audit_logs_tenant_time",
+    "unique": false,
+    "cols": "tenant_id,created_at,id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_audit_logs_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "blog_posts": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "title",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "slug",
+    "type": "varchar(220)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "excerpt",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "content",
+    "type": "mediumtext",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "cover_image_url",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('DRAFT','PUBLISHED')",
+    "null": false,
+    "key": "",
+    "default": "DRAFT",
+    "extra": ""
+   },
+   {
+    "name": "author_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_title",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "published_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_blog_posts_tenant_status_pub",
+    "unique": false,
+    "cols": "tenant_id,status,published_at,id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_blog_posts_tenant_slug",
+    "unique": true,
+    "cols": "tenant_id,slug"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_blog_posts_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "booking_services": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(150)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "duration_minutes",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "30",
+    "extra": ""
+   },
+   {
+    "name": "price",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "slots_per_time",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_booking_services_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_booking_services_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "bookings": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "service_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_mobile",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_email",
+    "type": "varchar(190)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "booking_date",
+    "type": "date",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "start_time",
+    "type": "time",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('PENDING','CONFIRMED','COMPLETED','CANCELLED')",
+    "null": false,
+    "key": "",
+    "default": "PENDING",
+    "extra": ""
+   },
+   {
+    "name": "notes",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_bookings_customer",
+    "unique": false,
+    "cols": "tenant_id,customer_id"
+   },
+   {
+    "name": "ix_bookings_tenant_date",
+    "unique": false,
+    "cols": "tenant_id,booking_date,start_time"
+   },
+   {
+    "name": "ix_bookings_tenant_service_slot",
+    "unique": false,
+    "cols": "tenant_id,service_id,booking_date,start_time"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_bookings_customer",
+    "cols": "tenant_id,customer_id",
+    "ref": "customers(tenant_id,id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_bookings_service",
+    "cols": "tenant_id,service_id",
+    "ref": "booking_services(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "categories": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "parent_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "slug",
+    "type": "varchar(140)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "text",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "image_url",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "seo_title",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_categories_tenant_parent",
+    "unique": false,
+    "cols": "tenant_id,parent_id,sort_order"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_categories_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   },
+   {
+    "name": "uq_categories_tenant_slug",
+    "unique": true,
+    "cols": "tenant_id,slug"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_categories_parent",
+    "cols": "tenant_id,parent_id",
+    "ref": "categories(tenant_id,id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_categories_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "coupon_redemptions": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "coupon_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_mobile",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "discount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_coupon_redemptions_coupon_mobile",
+    "unique": false,
+    "cols": "tenant_id,coupon_id,customer_mobile"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_coupon_redemptions_order",
+    "unique": true,
+    "cols": "tenant_id,order_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_coupon_redemptions_coupon",
+    "cols": "tenant_id,coupon_id",
+    "ref": "coupons(tenant_id,id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_coupon_redemptions_order",
+    "cols": "tenant_id,order_id",
+    "ref": "orders(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "coupons": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "code",
+    "type": "varchar(40)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "discount_type",
+    "type": "enum('PERCENT','FLAT')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "discount_value",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "max_discount",
+    "type": "decimal(10,2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "min_order_amount",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "starts_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ends_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "usage_limit",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "usage_per_customer",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "used_count",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_coupons_tenant_code",
+    "unique": true,
+    "cols": "tenant_id,code"
+   },
+   {
+    "name": "uq_coupons_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_coupons_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "customer_addresses": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "mobile",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "line1",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "line2",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "city",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "state",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "pincode",
+    "type": "varchar(10)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_default",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_customer_addresses_tenant_customer",
+    "unique": false,
+    "cols": "tenant_id,customer_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_customer_addresses_customer",
+    "cols": "tenant_id,customer_id",
+    "ref": "customers(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "customers": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "email",
+    "type": "varchar(190)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "mobile",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "password_hash",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('ACTIVE','BLOCKED')",
+    "null": false,
+    "key": "",
+    "default": "ACTIVE",
+    "extra": ""
+   },
+   {
+    "name": "last_login_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_customers_tenant_created",
+    "unique": false,
+    "cols": "tenant_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_customers_tenant_email",
+    "unique": true,
+    "cols": "tenant_id,email"
+   },
+   {
+    "name": "uq_customers_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   },
+   {
+    "name": "uq_customers_tenant_mobile",
+    "unique": true,
+    "cols": "tenant_id,mobile"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_customers_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "form_submissions": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "form_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "data",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ip",
+    "type": "varchar(45)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_read",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_form_submissions_tenant_form",
+    "unique": false,
+    "cols": "tenant_id,form_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_form_submissions_form",
+    "cols": "tenant_id,form_id",
+    "ref": "forms(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "forms": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "fields",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "notify_email",
+    "type": "varchar(190)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "success_message",
+    "type": "varchar(300)",
+    "null": false,
+    "key": "",
+    "default": "Thank you! We will contact you soon.",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_forms_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_forms_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "impersonation_sessions": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "platform_user_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "user_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "reason",
+    "type": "varchar(255)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ip",
+    "type": "varchar(45)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "started_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "ended_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_impersonation_user",
+    "unique": false,
+    "cols": "tenant_id,user_id"
+   },
+   {
+    "name": "ix_impersonation_admin",
+    "unique": false,
+    "cols": "platform_user_id"
+   },
+   {
+    "name": "ix_impersonation_tenant",
+    "unique": false,
+    "cols": "tenant_id,started_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_impersonation_admin",
+    "cols": "platform_user_id",
+    "ref": "platform_users(id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_impersonation_user",
+    "cols": "tenant_id,user_id",
+    "ref": "users(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "invoice_sequences": {
+  "cols": [
+   {
+    "name": "fy_label",
+    "type": "varchar(9)",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "value",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "fy_label"
+   }
+  ],
+  "fks": []
+ },
+ "media_files": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "storage_key",
+    "type": "varchar(300)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "url",
+    "type": "varchar(500)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "mime_type",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "size_bytes",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "original_name",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "uploaded_by",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_media_files_tenant_created",
+    "unique": false,
+    "cols": "tenant_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_media_files_key",
+    "unique": true,
+    "cols": "storage_key"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_media_files_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "menu_templates": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "code",
+    "type": "varchar(60)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "parent_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "default_label",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "icon",
+    "type": "varchar(60)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "route",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "permission_code",
+    "type": "varchar(60)",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "module_code",
+    "type": "varchar(40)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "default_sort",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_menu_templates_perm",
+    "unique": false,
+    "cols": "permission_code"
+   },
+   {
+    "name": "ix_menu_templates_parent",
+    "unique": false,
+    "cols": "parent_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_menu_templates_code",
+    "unique": true,
+    "cols": "code"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_menu_templates_parent",
+    "cols": "parent_id",
+    "ref": "menu_templates(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_menu_templates_perm",
+    "cols": "permission_code",
+    "ref": "permissions(code)",
+    "rule": "NO ACTION"
+   }
+  ]
+ },
+ "modules": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "code",
+    "type": "varchar(40)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_core",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "is_addon",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "addon_price_monthly",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_modules_code",
+    "unique": true,
+    "cols": "code"
+   }
+  ],
+  "fks": []
+ },
+ "notifications": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "channel",
+    "type": "enum('EMAIL','SMS','WHATSAPP','IN_APP')",
+    "null": false,
+    "key": "",
+    "default": "EMAIL",
+    "extra": ""
+   },
+   {
+    "name": "recipient_type",
+    "type": "enum('PLATFORM','USER','CUSTOMER','EMAIL')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "recipient_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "recipient",
+    "type": "varchar(190)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "template",
+    "type": "varchar(60)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "subject",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "payload",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('QUEUED','SENT','FAILED')",
+    "null": false,
+    "key": "MUL",
+    "default": "QUEUED",
+    "extra": ""
+   },
+   {
+    "name": "attempts",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "last_error",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_read",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "sent_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_notifications_status",
+    "unique": false,
+    "cols": "status,created_at"
+   },
+   {
+    "name": "ix_notifications_tenant_created",
+    "unique": false,
+    "cols": "tenant_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_notifications_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "order_items": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "product_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "product_name",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sku",
+    "type": "varchar(64)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "hsn_code",
+    "type": "varchar(10)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "unit_price",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "quantity",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "gst_rate",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "tax_amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "line_total",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_order_items_tenant_order",
+    "unique": false,
+    "cols": "tenant_id,order_id"
+   },
+   {
+    "name": "ix_order_items_tenant_product",
+    "unique": false,
+    "cols": "tenant_id,product_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_order_items_order",
+    "cols": "tenant_id,order_id",
+    "ref": "orders(tenant_id,id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_order_items_product",
+    "cols": "tenant_id,product_id",
+    "ref": "products(tenant_id,id)",
+    "rule": "NO ACTION"
+   }
+  ]
+ },
+ "order_status_history": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "from_status",
+    "type": "varchar(20)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "to_status",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "note",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "changed_by",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_order_status_history_order",
+    "unique": false,
+    "cols": "tenant_id,order_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_order_status_history_order",
+    "cols": "tenant_id,order_id",
+    "ref": "orders(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "orders": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_number",
+    "type": "varchar(30)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('PENDING','CONFIRMED','PACKED','SHIPPED','DELIVERED','CANCELLED','RETURNED')",
+    "null": false,
+    "key": "",
+    "default": "PENDING",
+    "extra": ""
+   },
+   {
+    "name": "payment_method",
+    "type": "enum('COD','RAZORPAY')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "payment_status",
+    "type": "enum('PENDING','PAID','FAILED','REFUNDED')",
+    "null": false,
+    "key": "",
+    "default": "PENDING",
+    "extra": ""
+   },
+   {
+    "name": "subtotal",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "discount_total",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "shipping_fee",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "tax_total",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "grand_total",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "coupon_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "coupon_code",
+    "type": "varchar(40)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_email",
+    "type": "varchar(190)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "customer_mobile",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ship_line1",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ship_line2",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ship_city",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ship_state",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ship_pincode",
+    "type": "varchar(10)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "notes",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "tracking_number",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "courier_name",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_order_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "placed_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_orders_coupon",
+    "unique": false,
+    "cols": "tenant_id,coupon_id"
+   },
+   {
+    "name": "ix_orders_tenant_created",
+    "unique": false,
+    "cols": "tenant_id,created_at"
+   },
+   {
+    "name": "ix_orders_tenant_customer",
+    "unique": false,
+    "cols": "tenant_id,customer_id,created_at"
+   },
+   {
+    "name": "ix_orders_tenant_mobile",
+    "unique": false,
+    "cols": "tenant_id,customer_mobile"
+   },
+   {
+    "name": "ix_orders_tenant_status_created",
+    "unique": false,
+    "cols": "tenant_id,status,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_orders_razorpay_order",
+    "unique": true,
+    "cols": "razorpay_order_id"
+   },
+   {
+    "name": "uq_orders_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   },
+   {
+    "name": "uq_orders_tenant_number",
+    "unique": true,
+    "cols": "tenant_id,order_number"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_orders_coupon",
+    "cols": "tenant_id,coupon_id",
+    "ref": "coupons(tenant_id,id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_orders_customer",
+    "cols": "tenant_id,customer_id",
+    "ref": "customers(tenant_id,id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_orders_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "pages": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "title",
+    "type": "varchar(150)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "slug",
+    "type": "varchar(160)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sections",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "published_sections",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('DRAFT','PUBLISHED')",
+    "null": false,
+    "key": "",
+    "default": "DRAFT",
+    "extra": ""
+   },
+   {
+    "name": "show_in_nav",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "nav_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "seo_title",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "published_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_pages_tenant_status_nav",
+    "unique": false,
+    "cols": "tenant_id,status,show_in_nav,nav_order"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_pages_tenant_slug",
+    "unique": true,
+    "cols": "tenant_id,slug"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_pages_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "password_resets": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "subject_type",
+    "type": "enum('PLATFORM','USER','CUSTOMER')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "subject_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "token_hash",
+    "type": "char(64)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "expires_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "used_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_password_resets_tenant",
+    "unique": false,
+    "cols": "tenant_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_password_resets_hash",
+    "unique": true,
+    "cols": "token_hash"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_password_resets_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "payments": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "provider",
+    "type": "enum('RAZORPAY','COD')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "provider_order_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "provider_payment_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('CREATED','CAPTURED','FAILED','REFUNDED')",
+    "null": false,
+    "key": "",
+    "default": "CREATED",
+    "extra": ""
+   },
+   {
+    "name": "raw_payload",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_payments_tenant_order",
+    "unique": false,
+    "cols": "tenant_id,order_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_payments_provider_payment",
+    "unique": true,
+    "cols": "provider_payment_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_payments_order",
+    "cols": "tenant_id,order_id",
+    "ref": "orders(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "permissions": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "code",
+    "type": "varchar(60)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "group_name",
+    "type": "varchar(60)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "module_code",
+    "type": "varchar(40)",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_permissions_module",
+    "unique": false,
+    "cols": "module_code"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_permissions_code",
+    "unique": true,
+    "cols": "code"
+   }
+  ],
+  "fks": []
+ },
+ "plan_modules": {
+  "cols": [
+   {
+    "name": "plan_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "module_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_plan_modules_module",
+    "unique": false,
+    "cols": "module_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "plan_id,module_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_plan_modules_module",
+    "cols": "module_id",
+    "ref": "modules(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_plan_modules_plan",
+    "cols": "plan_id",
+    "ref": "plans(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "plans": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "code",
+    "type": "varchar(40)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "price_monthly",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "price_yearly",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "trial_days",
+    "type": "smallint unsigned",
+    "null": false,
+    "key": "",
+    "default": "14",
+    "extra": ""
+   },
+   {
+    "name": "max_products",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "max_staff",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "max_storage_mb",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "allow_custom_domain",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "allow_headless_api",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "transaction_fee_percent",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "is_public",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_plans_code",
+    "unique": true,
+    "cols": "code"
+   }
+  ],
+  "fks": []
+ },
+ "platform_invoice_items": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "invoice_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(255)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sac_code",
+    "type": "varchar(10)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "quantity",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "1.00",
+    "extra": ""
+   },
+   {
+    "name": "unit_price",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ref_type",
+    "type": "varchar(40)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "ref_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_platform_invoice_items_invoice",
+    "unique": false,
+    "cols": "invoice_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_platform_invoice_items_invoice",
+    "cols": "invoice_id",
+    "ref": "platform_invoices(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "platform_invoices": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "invoice_number",
+    "type": "varchar(30)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "subscription_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "invoice_type",
+    "type": "enum('SUBSCRIPTION','ADDON','THEME','SETUP','CUSTOM_DESIGN','TRANSACTION_FEE','OTHER')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('DRAFT','ISSUED','PAID','VOID')",
+    "null": false,
+    "key": "MUL",
+    "default": "ISSUED",
+    "extra": ""
+   },
+   {
+    "name": "bill_to_name",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "bill_to_gstin",
+    "type": "varchar(15)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "bill_to_address",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "place_of_supply",
+    "type": "char(2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "subtotal",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "cgst_rate",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "cgst_amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "sgst_rate",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "sgst_amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "igst_rate",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "igst_amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "total",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "period_start",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "period_end",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "issued_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "due_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "paid_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_order_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_platform_invoices_sub",
+    "unique": false,
+    "cols": "subscription_id"
+   },
+   {
+    "name": "ix_platform_invoices_status",
+    "unique": false,
+    "cols": "status,due_at"
+   },
+   {
+    "name": "ix_platform_invoices_tenant",
+    "unique": false,
+    "cols": "tenant_id,issued_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_platform_invoices_number",
+    "unique": true,
+    "cols": "invoice_number"
+   },
+   {
+    "name": "uq_platform_invoices_rzp",
+    "unique": true,
+    "cols": "razorpay_order_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_platform_invoices_sub",
+    "cols": "subscription_id",
+    "ref": "subscriptions(id)",
+    "rule": "SET NULL"
+   },
+   {
+    "name": "fk_platform_invoices_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "platform_payments": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "invoice_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_order_id",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_payment_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('CREATED','CAPTURED','FAILED')",
+    "null": false,
+    "key": "",
+    "default": "CREATED",
+    "extra": ""
+   },
+   {
+    "name": "raw_payload",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_platform_payments_invoice",
+    "unique": false,
+    "cols": "invoice_id"
+   },
+   {
+    "name": "ix_platform_payments_tenant",
+    "unique": false,
+    "cols": "tenant_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_platform_payments_payment",
+    "unique": true,
+    "cols": "razorpay_payment_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_platform_payments_invoice",
+    "cols": "invoice_id",
+    "ref": "platform_invoices(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_platform_payments_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "platform_settings": {
+  "cols": [
+   {
+    "name": "setting_key",
+    "type": "varchar(80)",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "setting_value",
+    "type": "text",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "setting_key"
+   }
+  ],
+  "fks": []
+ },
+ "platform_users": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "email",
+    "type": "varchar(190)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "password_hash",
+    "type": "varchar(255)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "last_login_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_platform_users_email",
+    "unique": true,
+    "cols": "email"
+   }
+  ],
+  "fks": []
+ },
+ "product_images": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "product_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "url",
+    "type": "varchar(500)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "storage_key",
+    "type": "varchar(300)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "alt_text",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_product_images_tenant_product",
+    "unique": false,
+    "cols": "tenant_id,product_id,sort_order"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_product_images_product",
+    "cols": "tenant_id,product_id",
+    "ref": "products(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "products": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "category_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "slug",
+    "type": "varchar(220)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "short_description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "mediumtext",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sku",
+    "type": "varchar(64)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "price",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "compare_at_price",
+    "type": "decimal(12,2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "cost_price",
+    "type": "decimal(12,2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "track_inventory",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "stock_qty",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('DRAFT','ACTIVE','ARCHIVED')",
+    "null": false,
+    "key": "",
+    "default": "DRAFT",
+    "extra": ""
+   },
+   {
+    "name": "is_featured",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "hsn_code",
+    "type": "varchar(10)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "gst_rate",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "weight_grams",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_title",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ft_products_search",
+    "unique": false,
+    "cols": "name,short_description"
+   },
+   {
+    "name": "ix_products_tenant_category",
+    "unique": false,
+    "cols": "tenant_id,category_id,status,id"
+   },
+   {
+    "name": "ix_products_tenant_featured",
+    "unique": false,
+    "cols": "tenant_id,is_featured,status"
+   },
+   {
+    "name": "ix_products_tenant_status_created",
+    "unique": false,
+    "cols": "tenant_id,status,created_at"
+   },
+   {
+    "name": "ix_products_tenant_status_id",
+    "unique": false,
+    "cols": "tenant_id,status,id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_products_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   },
+   {
+    "name": "uq_products_tenant_sku",
+    "unique": true,
+    "cols": "tenant_id,sku"
+   },
+   {
+    "name": "uq_products_tenant_slug",
+    "unique": true,
+    "cols": "tenant_id,slug"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_products_category",
+    "cols": "tenant_id,category_id",
+    "ref": "categories(tenant_id,id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_products_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "refresh_tokens": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "subject_type",
+    "type": "enum('PLATFORM','USER','CUSTOMER')",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "subject_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "token_hash",
+    "type": "char(64)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "expires_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "revoked_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_ip",
+    "type": "varchar(45)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_refresh_tokens_subject",
+    "unique": false,
+    "cols": "subject_type,subject_id"
+   },
+   {
+    "name": "ix_refresh_tokens_tenant",
+    "unique": false,
+    "cols": "tenant_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_refresh_tokens_hash",
+    "unique": true,
+    "cols": "token_hash"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_refresh_tokens_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "role_permissions": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "role_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "permission_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_role_permissions_perm",
+    "unique": false,
+    "cols": "permission_id"
+   },
+   {
+    "name": "ix_role_permissions_tenant_role",
+    "unique": false,
+    "cols": "tenant_id,role_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "role_id,permission_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_role_permissions_perm",
+    "cols": "permission_id",
+    "ref": "permissions(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_role_permissions_role",
+    "cols": "tenant_id,role_id",
+    "ref": "roles(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "roles": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(80)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_system",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_roles_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   },
+   {
+    "name": "uq_roles_tenant_name",
+    "unique": true,
+    "cols": "tenant_id,name"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_roles_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "service_requests": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "request_type",
+    "type": "enum('STORE_SETUP','CUSTOM_DESIGN','CUSTOM_MODULE','EXCLUSIVE_THEME','OTHER')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "title",
+    "type": "varchar(200)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "text",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "quoted_amount",
+    "type": "decimal(12,2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "monthly_addon",
+    "type": "decimal(12,2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('NEW','QUOTED','ACCEPTED','IN_PROGRESS','DONE','REJECTED')",
+    "null": false,
+    "key": "MUL",
+    "default": "NEW",
+    "extra": ""
+   },
+   {
+    "name": "invoice_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_by",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_service_requests_invoice",
+    "unique": false,
+    "cols": "invoice_id"
+   },
+   {
+    "name": "ix_service_requests_status",
+    "unique": false,
+    "cols": "status,created_at"
+   },
+   {
+    "name": "ix_service_requests_tenant",
+    "unique": false,
+    "cols": "tenant_id,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_service_requests_invoice",
+    "cols": "invoice_id",
+    "ref": "platform_invoices(id)",
+    "rule": "SET NULL"
+   },
+   {
+    "name": "fk_service_requests_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "subscriptions": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "plan_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "billing_cycle",
+    "type": "enum('MONTHLY','YEARLY')",
+    "null": false,
+    "key": "",
+    "default": "MONTHLY",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('TRIALING','ACTIVE','PAST_DUE','CANCELLED','EXPIRED')",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "amount",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "current_period_start",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "current_period_end",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "grace_until",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "auto_renew",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "cancel_at_period_end",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_subscription_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_current",
+    "type": "tinyint(1)",
+    "null": true,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_subscriptions_plan",
+    "unique": false,
+    "cols": "plan_id"
+   },
+   {
+    "name": "ix_subscriptions_renewal",
+    "unique": false,
+    "cols": "status,current_period_end"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_subscriptions_current",
+    "unique": true,
+    "cols": "tenant_id,is_current"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_subscriptions_plan",
+    "cols": "plan_id",
+    "ref": "plans(id)",
+    "rule": "NO ACTION"
+   },
+   {
+    "name": "fk_subscriptions_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_counters": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "counter_name",
+    "type": "varchar(40)",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "value",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "tenant_id,counter_name"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_counters_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_domains": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "domain",
+    "type": "varchar(253)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "type",
+    "type": "enum('SUBDOMAIN','CUSTOM')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_primary",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "verification_status",
+    "type": "enum('PENDING','VERIFIED','FAILED')",
+    "null": false,
+    "key": "MUL",
+    "default": "PENDING",
+    "extra": ""
+   },
+   {
+    "name": "cname_target",
+    "type": "varchar(253)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "last_checked_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "last_check_error",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "check_attempts",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "verified_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_tenant_domains_pending",
+    "unique": false,
+    "cols": "verification_status,last_checked_at"
+   },
+   {
+    "name": "ix_tenant_domains_tenant",
+    "unique": false,
+    "cols": "tenant_id,type"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_tenant_domains_domain",
+    "unique": true,
+    "cols": "domain"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_domains_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_limits": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "max_products",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "max_staff",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "max_storage_mb",
+    "type": "int unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "tenant_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_limits_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_menus": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "menu_template_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "custom_label",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_hidden",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_tenant_menus_template",
+    "unique": false,
+    "cols": "menu_template_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "tenant_id,menu_template_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_menus_template",
+    "cols": "menu_template_id",
+    "ref": "menu_templates(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_tenant_menus_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_modules": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "module_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_enabled",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "source",
+    "type": "enum('PLAN','ADDON','MANUAL')",
+    "null": false,
+    "key": "",
+    "default": "PLAN",
+    "extra": ""
+   },
+   {
+    "name": "price_monthly",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "enabled_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "expires_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_tenant_modules_module",
+    "unique": false,
+    "cols": "module_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "tenant_id,module_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_modules_module",
+    "cols": "module_id",
+    "ref": "modules(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_tenant_modules_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_settings": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "store_email",
+    "type": "varchar(190)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "store_phone",
+    "type": "varchar(20)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "whatsapp_number",
+    "type": "varchar(20)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_key_id",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_key_secret_enc",
+    "type": "varbinary(512)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "razorpay_webhook_secret_enc",
+    "type": "varbinary(512)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "cod_enabled",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "online_payment_enabled",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "shipping_flat_fee",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "free_shipping_above",
+    "type": "decimal(10,2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "prices_include_tax",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "min_order_amount",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "seo_title",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "seo_keywords",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "social_links",
+    "type": "json",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "google_analytics_id",
+    "type": "varchar(40)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "tenant_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_settings_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenant_theme_settings": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "stage",
+    "type": "enum('DRAFT','PUBLISHED')",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "theme_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "settings",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "sections",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "version",
+    "type": "int unsigned",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "updated_by",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "published_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_tenant_theme_settings_theme",
+    "unique": false,
+    "cols": "theme_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_tenant_theme_settings_stage",
+    "unique": true,
+    "cols": "tenant_id,stage"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tts_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_tts_theme",
+    "cols": "theme_id",
+    "ref": "themes(id)",
+    "rule": "NO ACTION"
+   }
+  ]
+ },
+ "tenant_themes": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "theme_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "amount_paid",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "invoice_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "acquired_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_tenant_themes_invoice",
+    "unique": false,
+    "cols": "invoice_id"
+   },
+   {
+    "name": "ix_tenant_themes_theme",
+    "unique": false,
+    "cols": "theme_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "tenant_id,theme_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenant_themes_invoice",
+    "cols": "invoice_id",
+    "ref": "platform_invoices(id)",
+    "rule": "SET NULL"
+   },
+   {
+    "name": "fk_tenant_themes_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_tenant_themes_theme",
+    "cols": "theme_id",
+    "ref": "themes(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "tenants": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "uuid",
+    "type": "char(36)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(150)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "subdomain",
+    "type": "varchar(63)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "owner_name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "owner_email",
+    "type": "varchar(190)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "owner_mobile",
+    "type": "varchar(20)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "plan_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('PENDING_PAYMENT','TRIAL','ACTIVE','PAST_DUE','SUSPENDED','CANCELLED')",
+    "null": false,
+    "key": "MUL",
+    "default": "TRIAL",
+    "extra": ""
+   },
+   {
+    "name": "trial_ends_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "suspended_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "suspended_reason",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "gstin",
+    "type": "varchar(15)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "legal_name",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "address_line1",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "address_line2",
+    "type": "varchar(200)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "city",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "state",
+    "type": "varchar(100)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "state_code",
+    "type": "char(2)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "pincode",
+    "type": "varchar(10)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "country",
+    "type": "char(2)",
+    "null": false,
+    "key": "",
+    "default": "IN",
+    "extra": ""
+   },
+   {
+    "name": "currency",
+    "type": "char(3)",
+    "null": false,
+    "key": "",
+    "default": "INR",
+    "extra": ""
+   },
+   {
+    "name": "timezone",
+    "type": "varchar(50)",
+    "null": false,
+    "key": "",
+    "default": "Asia/Kolkata",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_tenants_plan",
+    "unique": false,
+    "cols": "plan_id"
+   },
+   {
+    "name": "ix_tenants_status",
+    "unique": false,
+    "cols": "status,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_tenants_subdomain",
+    "unique": true,
+    "cols": "subdomain"
+   },
+   {
+    "name": "uq_tenants_uuid",
+    "unique": true,
+    "cols": "uuid"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_tenants_plan",
+    "cols": "plan_id",
+    "ref": "plans(id)",
+    "rule": "NO ACTION"
+   }
+  ]
+ },
+ "themes": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "code",
+    "type": "varchar(40)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(100)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "description",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "preview_image_url",
+    "type": "varchar(500)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_premium",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "price",
+    "type": "decimal(10,2)",
+    "null": false,
+    "key": "",
+    "default": "0.00",
+    "extra": ""
+   },
+   {
+    "name": "owner_tenant_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "default_settings",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "default_sections",
+    "type": "json",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_active",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "1",
+    "extra": ""
+   },
+   {
+    "name": "sort_order",
+    "type": "int",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_themes_owner",
+    "unique": false,
+    "cols": "owner_tenant_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_themes_code",
+    "unique": true,
+    "cols": "code"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_themes_owner_tenant",
+    "cols": "owner_tenant_id",
+    "ref": "tenants(id)",
+    "rule": "SET NULL"
+   }
+  ]
+ },
+ "transaction_fees": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "order_amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "fee_percent",
+    "type": "decimal(5,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "fee_amount",
+    "type": "decimal(12,2)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "invoice_id",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "fk_transaction_fees_invoice",
+    "unique": false,
+    "cols": "invoice_id"
+   },
+   {
+    "name": "ix_transaction_fees_unbilled",
+    "unique": false,
+    "cols": "tenant_id,invoice_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_transaction_fees_order",
+    "unique": true,
+    "cols": "tenant_id,order_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_transaction_fees_invoice",
+    "cols": "invoice_id",
+    "ref": "platform_invoices(id)",
+    "rule": "SET NULL"
+   },
+   {
+    "name": "fk_transaction_fees_order",
+    "cols": "tenant_id,order_id",
+    "ref": "orders(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "user_invitations": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "user_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "token_hash",
+    "type": "char(64)",
+    "null": false,
+    "key": "UNI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "invited_by",
+    "type": "bigint unsigned",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "expires_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "accepted_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_user_invitations_tenant_user",
+    "unique": false,
+    "cols": "tenant_id,user_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_user_invitations_token",
+    "unique": true,
+    "cols": "token_hash"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_user_invitations_user",
+    "cols": "tenant_id,user_id",
+    "ref": "users(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "user_roles": {
+  "cols": [
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "user_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "role_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": ""
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_user_roles_tenant_role",
+    "unique": false,
+    "cols": "tenant_id,role_id"
+   },
+   {
+    "name": "ix_user_roles_tenant_user",
+    "unique": false,
+    "cols": "tenant_id,user_id"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "user_id,role_id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_user_roles_role",
+    "cols": "tenant_id,role_id",
+    "ref": "roles(tenant_id,id)",
+    "rule": "CASCADE"
+   },
+   {
+    "name": "fk_user_roles_user",
+    "cols": "tenant_id,user_id",
+    "ref": "users(tenant_id,id)",
+    "rule": "CASCADE"
+   }
+  ]
+ },
+ "users": {
+  "cols": [
+   {
+    "name": "id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "PRI",
+    "default": "",
+    "extra": "auto_increment"
+   },
+   {
+    "name": "tenant_id",
+    "type": "bigint unsigned",
+    "null": false,
+    "key": "MUL",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "email",
+    "type": "varchar(190)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "password_hash",
+    "type": "varchar(255)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "name",
+    "type": "varchar(120)",
+    "null": false,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "mobile",
+    "type": "varchar(20)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "is_owner",
+    "type": "tinyint(1)",
+    "null": false,
+    "key": "",
+    "default": "0",
+    "extra": ""
+   },
+   {
+    "name": "status",
+    "type": "enum('INVITED','ACTIVE','DISABLED')",
+    "null": false,
+    "key": "",
+    "default": "INVITED",
+    "extra": ""
+   },
+   {
+    "name": "last_login_at",
+    "type": "datetime(3)",
+    "null": true,
+    "key": "",
+    "default": "",
+    "extra": ""
+   },
+   {
+    "name": "created_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED"
+   },
+   {
+    "name": "updated_at",
+    "type": "datetime(3)",
+    "null": false,
+    "key": "",
+    "default": "CURRENT_TIMESTAMP(3)",
+    "extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(3)"
+   }
+  ],
+  "idx": [
+   {
+    "name": "ix_users_tenant_status",
+    "unique": false,
+    "cols": "tenant_id,status,created_at"
+   },
+   {
+    "name": "PRIMARY",
+    "unique": true,
+    "cols": "id"
+   },
+   {
+    "name": "uq_users_tenant_email",
+    "unique": true,
+    "cols": "tenant_id,email"
+   },
+   {
+    "name": "uq_users_tenant_id",
+    "unique": true,
+    "cols": "tenant_id,id"
+   }
+  ],
+  "fks": [
+   {
+    "name": "fk_users_tenant",
+    "cols": "tenant_id",
+    "ref": "tenants(id)",
+    "rule": "CASCADE"
+   }
+  ]
+ }
+}

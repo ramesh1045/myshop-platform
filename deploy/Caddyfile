@@ -1,0 +1,81 @@
+# =====================================================================
+#  Caddy reverse proxy — PDF §2, §6
+#   * Wildcard SSL for *.myshop.com (Cloudflare DNS challenge) -> a new
+#     client goes live with only a DB row, no DNS change.
+#   * On-demand TLS for client custom domains (kavyatextiles.com): Caddy
+#     first asks the API whether the domain is verified, then issues SSL.
+#   * One Angular build served for every host; /api/** -> Node.js API (1..N)
+# =====================================================================
+{
+	email {$ACME_EMAIL}
+	on_demand_tls {
+		ask http://api:3000/api/internal/domain-check?secret={$INTERNAL_SECRET}
+	}
+}
+
+(app) {
+	encode zstd gzip
+
+	# API: load-balanced over every "api" container (docker compose --scale api=3)
+	@api path /api/* /uploads/*
+	handle @api {
+		reverse_proxy {
+			dynamic a {
+				name api
+				port 3000
+				refresh 10s
+			}
+			lb_policy round_robin
+			health_uri /api/health
+			health_interval 10s
+		}
+	}
+
+	# SEO files are generated per store by the API
+	handle /sitemap.xml {
+		rewrite * /api/public/sitemap.xml
+		reverse_proxy api:3000
+	}
+	handle /robots.txt {
+		rewrite * /api/public/robots.txt
+		reverse_proxy api:3000
+	}
+
+	# Angular (single build: marketing + storefront + store admin + super admin)
+	handle {
+		root * /srv/web
+		@static path *.js *.css *.woff2 *.png *.jpg *.svg *.ico *.webp
+		header @static Cache-Control "public, max-age=31536000, immutable"
+		header /index.html Cache-Control "no-cache"
+		try_files {path} /index.html
+		file_server
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}
+
+# myshop.com, admin.myshop.com, kavya.myshop.com ... (wildcard certificate)
+{$PLATFORM_DOMAIN}, *.{$PLATFORM_DOMAIN} {
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+	import app
+}
+
+# Any other host = a client's custom domain (CNAME -> stores.myshop.com)
+https:// {
+	tls {
+		on_demand
+	}
+	import app
+}
+
+# plain http -> https
+http:// {
+	redir https://{host}{uri} permanent
+}

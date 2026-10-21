@@ -1,0 +1,6 @@
+{
+  "/api": { "target": "http://localhost:3000", "secure": false, "changeOrigin": false },
+  "/uploads": { "target": "http://localhost:3000", "secure": false, "changeOrigin": false },
+  "/sitemap.xml": { "target": "http://localhost:3000", "secure": false, "changeOrigin": false, "pathRewrite": { "^/sitemap.xml": "/api/public/sitemap.xml" } },
+  "/robots.txt": { "target": "http://localhost:3000", "secure": false, "changeOrigin": false, "pathRewrite": { "^/robots.txt": "/api/public/robots.txt" } }
+}

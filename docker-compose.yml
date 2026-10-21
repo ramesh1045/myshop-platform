@@ -1,0 +1,104 @@
+# =====================================================================
+# Stage 1 (1–50 clients, PDF §7): everything on ONE VPS with Docker Compose.
+#   docker compose --env-file deploy/.env up -d --build
+#   docker compose run --rm migrate
+#   docker compose up -d --scale api=2      # more API copies (stateless)
+# Stage 2/3: move mysql/redis to separate/managed servers by changing DB_HOST / REDIS_URL.
+# =====================================================================
+x-api-env: &api-env
+  NODE_ENV: production
+  PORT: 3000
+  PLATFORM_DOMAIN: ${PLATFORM_DOMAIN}
+  CNAME_TARGET: ${CNAME_TARGET}
+  SERVER_IP: ${SERVER_IP:-}
+  PUBLIC_SCHEME: https
+  DB_HOST: ${DB_HOST:-mysql}
+  DB_PORT: 3306
+  DB_USER: ${DB_USER:-myshop}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DB_NAME: ${DB_NAME:-myshop}
+  REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+  JWT_SECRET: ${JWT_SECRET}
+  ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+  INTERNAL_SECRET: ${INTERNAL_SECRET}
+  PLATFORM_RAZORPAY_KEY_ID: ${PLATFORM_RAZORPAY_KEY_ID:-}
+  PLATFORM_RAZORPAY_KEY_SECRET: ${PLATFORM_RAZORPAY_KEY_SECRET:-}
+  PLATFORM_RAZORPAY_WEBHOOK_SECRET: ${PLATFORM_RAZORPAY_WEBHOOK_SECRET:-}
+  S3_ENDPOINT: ${S3_ENDPOINT:-}
+  S3_REGION: ${S3_REGION:-auto}
+  S3_BUCKET: ${S3_BUCKET:-}
+  S3_ACCESS_KEY: ${S3_ACCESS_KEY:-}
+  S3_SECRET_KEY: ${S3_SECRET_KEY:-}
+  CDN_BASE_URL: ${CDN_BASE_URL:-}
+  SMTP_HOST: ${SMTP_HOST:-}
+  SMTP_PORT: ${SMTP_PORT:-587}
+  SMTP_USER: ${SMTP_USER:-}
+  SMTP_PASS: ${SMTP_PASS:-}
+  MAIL_FROM: ${MAIL_FROM:-MyShop <no-reply@myshop.com>}
+
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.caddy
+      args:
+        PLATFORM_DOMAIN: ${PLATFORM_DOMAIN}
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      PLATFORM_DOMAIN: ${PLATFORM_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+    volumes: [caddy_data:/data, caddy_config:/config]
+    depends_on: [api]
+
+  api:
+    build: { context: ., dockerfile: deploy/Dockerfile.api }
+    restart: unless-stopped
+    environment: *api-env
+    depends_on:
+      mysql: { condition: service_healthy }
+      redis: { condition: service_started }
+
+  worker:
+    build: { context: ., dockerfile: deploy/Dockerfile.api }
+    command: ["node", "dist/worker.js"]
+    restart: unless-stopped
+    environment: *api-env
+    depends_on: [mysql, redis]
+
+  migrate:
+    build: { context: ., dockerfile: deploy/Dockerfile.api }
+    command: ["node", "dist/db/migrate.js"]
+    environment: *api-env
+    depends_on:
+      mysql: { condition: service_healthy }
+    profiles: ["tools"]
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci", "--max-connections=500"]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME:-myshop}
+      MYSQL_USER: ${DB_USER:-myshop}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes: [mysql_data:/var/lib/mysql]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      retries: 10
+
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    volumes: [redis_data:/data]
+
+volumes:
+  caddy_data:
+  caddy_config:
+  mysql_data:
+  redis_data:

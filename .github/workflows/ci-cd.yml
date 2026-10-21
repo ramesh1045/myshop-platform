@@ -1,0 +1,90 @@
+# GitHub Actions CI/CD — PDF §11
+# On every push/PR: typecheck + build API, run DB migrations on MySQL 8, run the
+# end-to-end test suite, build Angular. On push to main: deploy to the VPS.
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: myshop
+          MYSQL_USER: myshop
+          MYSQL_PASSWORD: myshop
+        ports: ["3306:3306"]
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1" --health-interval=10s --health-retries=10
+      redis:
+        image: redis:7.4-alpine
+        ports: ["6379:6379"]
+    env:
+      NODE_ENV: test
+      PLATFORM_DOMAIN: localhost
+      DB_HOST: 127.0.0.1
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: myshop
+      REDIS_URL: redis://127.0.0.1:6379
+      JWT_SECRET: ci-secret-ci-secret-ci-secret-ci-secret
+      ENCRYPTION_KEY: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
+      INTERNAL_SECRET: change-me-internal
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: backend/package-lock.json }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm run migrate
+      - run: npm run seed:superadmin -- admin@myshop.test "SuperAdmin@123" "CI"
+      - run: npm run seed:demo
+      - name: Start API + worker
+        run: |
+          node dist/server.js > api.log 2>&1 &
+          node dist/worker.js > worker.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf localhost:3000/api/health && break; sleep 1; done
+      - run: npm test
+      - if: failure()
+        run: tail -100 api.log worker.log
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: npm ci
+      - run: npx ng build --configuration production
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/myshop-platform
+            git pull --ff-only
+            docker compose --env-file deploy/.env build
+            docker compose --env-file deploy/.env run --rm migrate
+            docker compose --env-file deploy/.env up -d --remove-orphans
+            docker image prune -f

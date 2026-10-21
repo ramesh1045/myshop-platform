@@ -1,0 +1,46 @@
+import { Routes } from '@angular/router';
+import { adminAuthGuard, permGuard } from './admin-session';
+
+/** kavya.myshop.com/admin — Store Owner & Staff panel (PDF §4) */
+export const STORE_ADMIN_ROUTES: Routes = [
+  { path: 'login', loadComponent: () => import('./pages/auth.pages').then((m) => m.LoginPage) },
+  { path: 'accept-invite', loadComponent: () => import('./pages/auth.pages').then((m) => m.AcceptInvitePage) },
+  { path: 'forgot-password', loadComponent: () => import('./pages/auth.pages').then((m) => m.ForgotPage) },
+  { path: 'reset-password', loadComponent: () => import('./pages/auth.pages').then((m) => m.ResetPage) },
+  { path: 'impersonate', loadComponent: () => import('./pages/auth.pages').then((m) => m.ImpersonatePage) },
+  {
+    path: '', canActivate: [adminAuthGuard], loadComponent: () => import('./admin-shell').then((m) => m.AdminShell),
+    children: [
+      { path: '', pathMatch: 'full', loadComponent: () => import('./pages/auth.pages').then((m) => m.LandingRedirect) },
+      { path: 'no-access', loadComponent: () => import('./pages/auth.pages').then((m) => m.NoAccessPage) },
+      { path: 'dashboard', canActivate: [permGuard('DASHBOARD_VIEW')], loadComponent: () => import('./pages/dashboard.page').then((m) => m.DashboardPage) },
+      { path: 'products', canActivate: [permGuard('PRODUCT_VIEW')], loadComponent: () => import('./pages/products.page').then((m) => m.ProductsPage) },
+      { path: 'products/new', canActivate: [permGuard('PRODUCT_CREATE')], loadComponent: () => import('./pages/product-form.page').then((m) => m.ProductFormPage) },
+      { path: 'products/:id', canActivate: [permGuard('PRODUCT_VIEW')], loadComponent: () => import('./pages/product-form.page').then((m) => m.ProductFormPage) },
+      { path: 'categories', canActivate: [permGuard('CATEGORY_MANAGE')], loadComponent: () => import('./pages/categories.page').then((m) => m.CategoriesPage) },
+      { path: 'orders', canActivate: [permGuard('ORDER_VIEW')], loadComponent: () => import('./pages/orders.page').then((m) => m.OrdersPage) },
+      { path: 'orders/:id', canActivate: [permGuard('ORDER_VIEW')], loadComponent: () => import('./pages/orders.page').then((m) => m.OrderDetailPage) },
+      { path: 'customers', canActivate: [permGuard('CUSTOMER_VIEW')], loadComponent: () => import('./pages/customers.page').then((m) => m.CustomersPage) },
+      { path: 'coupons', canActivate: [permGuard('COUPON_MANAGE')], loadComponent: () => import('./pages/coupons.page').then((m) => m.CouponsPage) },
+      { path: 'reports', canActivate: [permGuard('REPORT_VIEW')], loadComponent: () => import('./pages/reports.page').then((m) => m.ReportsPage) },
+      { path: 'pages', canActivate: [permGuard('PAGE_MANAGE')], loadComponent: () => import('./pages/content.pages').then((m) => m.PagesListPage) },
+      { path: 'pages/:id', canActivate: [permGuard('PAGE_MANAGE')], loadComponent: () => import('./pages/content.pages').then((m) => m.PageEditorPage) },
+      { path: 'forms', canActivate: [permGuard('FORM_MANAGE')], loadComponent: () => import('./pages/content.pages').then((m) => m.FormsPage) },
+      { path: 'blog', canActivate: [permGuard('BLOG_MANAGE')], loadComponent: () => import('./pages/content.pages').then((m) => m.BlogAdminPage) },
+      { path: 'bookings', canActivate: [permGuard('BOOKING_MANAGE')], loadComponent: () => import('./pages/content.pages').then((m) => m.BookingsAdminPage) },
+      { path: 'theme', canActivate: [permGuard('THEME_MANAGE')], loadComponent: () => import('./pages/theme.page').then((m) => m.ThemePage) },
+      { path: 'menus', canActivate: [permGuard('MENU_MANAGE')], loadComponent: () => import('./pages/access.pages').then((m) => m.MenusPage) },
+      { path: 'staff', canActivate: [permGuard('STAFF_VIEW')], loadComponent: () => import('./pages/access.pages').then((m) => m.StaffPage) },
+      { path: 'roles', canActivate: [permGuard('ROLE_MANAGE')], loadComponent: () => import('./pages/access.pages').then((m) => m.RolesPage) },
+      { path: 'audit', canActivate: [permGuard('AUDIT_VIEW')], loadComponent: () => import('./pages/access.pages').then((m) => m.AuditPage) },
+      { path: 'settings/store', canActivate: [permGuard('SETTINGS_MANAGE')], loadComponent: () => import('./pages/settings.pages').then((m) => m.StoreSettingsPage) },
+      { path: 'settings/payments', canActivate: [permGuard('PAYMENT_SETTINGS_MANAGE')], loadComponent: () => import('./pages/settings.pages').then((m) => m.PaymentSettingsPage) },
+      { path: 'settings/seo', canActivate: [permGuard('SEO_MANAGE')], loadComponent: () => import('./pages/settings.pages').then((m) => m.SeoSettingsPage) },
+      { path: 'settings/domains', canActivate: [permGuard('DOMAIN_MANAGE', 'SETTINGS_MANAGE')], loadComponent: () => import('./pages/settings.pages').then((m) => m.DomainsPage) },
+      { path: 'settings/api-keys', canActivate: [permGuard('API_KEY_MANAGE')], loadComponent: () => import('./pages/settings.pages').then((m) => m.ApiKeysPage) },
+      { path: 'billing', canActivate: [permGuard('BILLING_MANAGE')], loadComponent: () => import('./pages/billing.page').then((m) => m.BillingPage) },
+      { path: 'billing/invoices/:id', canActivate: [permGuard('BILLING_MANAGE')], loadComponent: () => import('./pages/billing.page').then((m) => m.InvoicePage) },
+      { path: 'account', loadComponent: () => import('./pages/auth.pages').then((m) => m.MyAccountPage) },
+    ],
+  },
+];
